@@ -1,22 +1,27 @@
+""" Page pour calculer les horaires variables chez NG"""
+
 import time
 import streamlit as st
 import re 
 
-
+# Fonction pour transformer le format 00:00 en minutes int
 def en_minutes(horaire):
     heures, minutes = map(int, horaire.split(":"))
     return heures * 60 + minutes
 
-
+# Setup le streamlit avec le titre et l'icone
 st.set_page_config(page_title="Time", page_icon="⌛")
 
+# Demande d'entrer le copier coller
 parse_input = st.text_input("Parsing")
 
+# Regex pour extraire les dates
 parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
 
+# Affiche les données parsées pour vérifié qu'elles sont bonnes
 st.text(f"parsed:{parsed}")
 
-
+# Fonction qui calcul et affiche le temps restant
 def afficher_restant(parsed):
     result = 90
     size = len(parsed)
@@ -32,11 +37,12 @@ def afficher_restant(parsed):
 
     st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
 
-
+# Si il y a des données entrées dans le 1er input, alors on calcul et affiche
 if parsed:
     parsed3 = [parsed[0], parsed[2], parsed[4]]
     afficher_restant(parsed3)
 
+# Pour chaque champ prévisionnel, on vérifie que l'input est bon
 miditmp_input = None
 st.text("Prévision format : 00:00")
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -78,6 +84,8 @@ with c5:
     if fin_input and en_minutes(fin_input) > en_minutes("17:30"):
         st.text("Erreur, heure de fin max : 17h30")
 
+
+# En fonction des combinaison d'input, on affichera des résultats 
 if arr_input and midi1_input and midi2_input:
     parsed3 = [arr_input, midi1_input, midi2_input]
     afficher_restant(parsed3)
