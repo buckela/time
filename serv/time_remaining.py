@@ -15,19 +15,24 @@ parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
 st.text(f"parsed:{parsed}")
 
 
-result = 90
-size = len(parsed)
-if size>=2:
-    result -= en_minutes("08:30")-en_minutes(parsed[0])
-if size>=6:
-    diff = max(en_minutes(parsed[4])-en_minutes(parsed[2]),45)
-    result -= (105-diff)
+def afficher_restant(parsed):
+    result = 90
+    size = len(parsed)
+    if size > 0:
+        result -= en_minutes("08:30")-en_minutes(parsed[0])
+    if size > 2:
+        diff = max(en_minutes(parsed[2])-en_minutes(parsed[1]),45)
+        result -= (105-diff)
 
-fin = en_minutes("16:15") + result
-heure_fin = fin // 60
-minutes_fin = fin % 60
+    fin = en_minutes("16:15") + result
+    heure_fin = fin // 60
+    minutes_fin = fin % 60
 
-st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
+    st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
+
+if parsed:
+    parsed3 = [parsed[0], parsed[2], parsed[4]]
+    afficher_restant(parsed3)
 
 miditmp_input = None
 st.text("Prévision format : 00:00")
