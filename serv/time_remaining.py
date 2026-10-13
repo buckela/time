@@ -98,3 +98,12 @@ with c5:
 if arr_input and midi1_input and midi2_input:
     parsed3 = [arr_input, midi1_input, midi2_input]
     afficher_restant(parsed3)
+travail = 7*60 + 30 
+
+if arr_input and miditmp_input and fin_input :
+    pause = fin_input - arr_input - travail 
+    if pause < 45 : 
+        print("Impossible pause trop courte")
+    else : 
+        midi1_input = arr_input + travail // 2
+        midi2_input = midi1_input + pause 
