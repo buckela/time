@@ -6,7 +6,9 @@ import re
 
 # Fonction pour transformer le format 00:00 en minutes int
 def en_minutes(horaire):
+    # format XX:YY, on split -> (XX, YY)
     heures, minutes = map(int, horaire.split(":"))
+    # Calcul XX * 60 + YY
     return heures * 60 + minutes
 
 # Setup le streamlit avec le titre et l'icone
@@ -23,18 +25,25 @@ st.text(f"parsed:{parsed}")
 
 # Fonction qui calcul et affiche le temps restant
 def afficher_restant(parsed):
+    # Temps minimal théorique à faire par jour en minutes ( en dehors du temps obligatoire )
     result = 90
+    # On récupère le nombre d'élément
     size = len(parsed)
+    # En fonction du nombre d'élément, alors on décompte le temps supplémentaire
     if size > 0:
+        # Matin avant 8h30
         result -= en_minutes("08:30")-en_minutes(parsed[0])
     if size > 2:
+        # Aprem au 3ème badgage 
         diff = max(en_minutes(parsed[2])-en_minutes(parsed[1]),45)
         result -= (105-diff)
 
+    # Calcul de l'heure de fin
     fin = en_minutes("16:15") + result
+    # Formatage de l'heure de fin pour l'afficher
     heure_fin = fin // 60
     minutes_fin = fin % 60
-
+    # Affichage
     st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
 
 # Si il y a des données entrées dans le 1er input, alors on calcul et affiche
