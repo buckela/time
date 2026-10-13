@@ -101,9 +101,17 @@ if arr_input and midi1_input and midi2_input:
 
 # Calcul du temps de pause possible à midi en fonction du début et fin de journée
 travail = 7*60 + 30 
-if arr_input and fin_input :
-    pause = en_minutes(fin_input) - en_minutes(arr_input) - travail
-    if pause < 45 : 
-        st.text("Impossible pause trop courte")
-    else : 
-        st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
+if parsed:
+    if (arr_input or parsed[0]) and fin_input :
+        pause = en_minutes(fin_input) - en_minutes(arr_input) - travail
+        if pause < 45 : 
+            st.text("Impossible pause trop courte")
+        else : 
+            st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
+else:
+    if arr_input and fin_input :
+        pause = en_minutes(fin_input) - en_minutes(arr_input) - travail
+        if pause < 45 : 
+            st.text("Impossible pause trop courte")
+        else : 
+            st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
