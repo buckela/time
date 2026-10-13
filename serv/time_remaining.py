@@ -10,6 +10,25 @@ st.set_page_config(page_title="Time", page_icon="⌛")
 
 parse_input = st.text_input("Parsing")
 
+parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
+
+st.text(f"parsed:{parsed}")
+
+
+result = 90
+size = len(parsed)
+if size>=2:
+    result -= en_minutes("08:30")-en_minutes(parsed[0])
+if size>=6:
+    diff = max(en_minutes(parsed[4])-en_minutes(parsed[2]),45)
+    result -= (105-diff)
+
+fin = en_minutes("16:15") + result
+heure_fin = fin // 60
+minutes_fin = fin % 60
+
+st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
+
 miditmp_input = None
 st.text("Prévision format : 00:00")
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -51,21 +70,3 @@ with c5:
     if fin_input and en_minutes(fin_input) > en_minutes("17:30"):
         st.text("Erreur, heure de fin max : 17h30")
 
-parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
-
-st.text(f"parsed:\n{parsed}")
-
-
-result = 90
-size = len(parsed)
-if size>=2:
-    result -= en_minutes("08:30")-en_minutes(parsed[0])
-if size>=6:
-    diff = max(en_minutes(parsed[4])-en_minutes(parsed[2]),45)
-    result -= (105-diff)
-
-fin = en_minutes("16:15") + result
-heure_fin = fin // 60
-minutes_fin = fin % 60
-
-st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
