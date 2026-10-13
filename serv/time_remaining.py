@@ -101,7 +101,7 @@ if arr_input and midi1_input and midi2_input:
 travail = 7*60 + 30 
 
 if arr_input and miditmp_input and fin_input :
-    pause = fin_input - arr_input - travail 
+    pause = en_minutes(fin_input) - en_minutes(arr_input) - en_minutes(travail)
     if pause < 45 : 
         print("Impossible pause trop courte")
     else : 
