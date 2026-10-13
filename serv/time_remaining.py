@@ -2,9 +2,11 @@ import time
 import streamlit as st
 import re 
 
+
 def en_minutes(horaire):
     heures, minutes = map(int, horaire.split(":"))
     return heures * 60 + minutes
+
 
 st.set_page_config(page_title="Time", page_icon="⌛")
 
@@ -30,6 +32,7 @@ def afficher_restant(parsed):
 
     st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
 
+
 if parsed:
     parsed3 = [parsed[0], parsed[2], parsed[4]]
     afficher_restant(parsed3)
@@ -49,7 +52,7 @@ with c2:
         midi1_input = st.text_input("Heure début midi")
         if midi1_input and en_minutes(midi1_input) < en_minutes("11:45"):
             st.text("Erreur, horaire de début min: 11h45")
-        if midi1_input and en_minutes(midi1_input) > en_minutes("11:45"):
+        if midi1_input and en_minutes(midi1_input) > en_minutes("12:45"):
             st.text("Erreur, horaire de début max: 12h45")
 
 with c3:
@@ -57,7 +60,7 @@ with c3:
         midi2_input = st.text_input("Heure de fin midi")
         if midi2_input and en_minutes(midi2_input) > en_minutes("13:30"):
             st.text("Erreur, horaire de fin max: 13h30")
-        if midi2_input and en_minutes(midi2_input) > en_minutes("12:30"):
+        if midi2_input and en_minutes(midi2_input) < en_minutes("12:30"):
             st.text("Erreur, horaire de fin min: 12h30")
 
 with c4:
@@ -75,3 +78,6 @@ with c5:
     if fin_input and en_minutes(fin_input) > en_minutes("17:30"):
         st.text("Erreur, heure de fin max : 17h30")
 
+if arr_input and midi1_input and midi2_input:
+    parsed3 = [arr_input, midi1_input, midi2_input]
+    afficher_restant(parsed3)
