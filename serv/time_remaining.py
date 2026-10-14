@@ -7,9 +7,27 @@ import re
 # Fonction pour transformer le format 00:00 en minutes int
 def en_minutes(horaire):
     # format XX:YY, on split -> (XX, YY)
-    heures, minutes = map(int, horaire.split(":"))
-    # Calcul XX * 60 + YY
-    return heures * 60 + minutes
+    try:
+        heures, minutes = map(int, horaire.split(":"))
+    except:
+        try:
+            heures, minutes = horaire.split("h")
+            heures = int(heures)
+            minutes = int(minutes) if minutes else 0
+        except:
+            try:
+                heures, minutes = horaire.split(".")
+                heures = int(heures)
+                minutes = int(minutes) if minutes else 0
+            except:
+                st.text("format accepté : 00:00 ou 00h00 ou 0.00")
+    finally:
+        # Calcul XX * 60 + YY
+        return heures * 60 + minutes
+
+TMP_TRAVAIL = 7*60 + 30
+HEURE_EWEN = "12:00"
+MINUTE_EWEN = en_minutes(HEURE_EWEN)
 
 # Setup le streamlit avec le titre et l'icone
 st.set_page_config(page_title="Time", page_icon="⌛")
@@ -21,7 +39,7 @@ parse_input = st.text_input("Parsing")
 parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
 
 # Affiche les données parsées pour vérifié qu'elles sont bonnes
-st.text(f"parsed:{parsed}")
+#st.text(f"parsed:{parsed}")
 
 # Fonction qui calcul et affiche le temps restant
 def afficher_restant(parsed):
@@ -47,8 +65,12 @@ def afficher_restant(parsed):
     st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
 
 # Si il y a des données entrées dans le 1er input, alors on calcul et affiche
-if parsed:
-    parsed3 = [parsed[0], parsed[2], parsed[4]]
+if parsed and len(parsed) > 0:
+    parsed3 = [parsed[0]]
+    if len(parsed) > 2:
+        parsed3.append(parsed[2])
+        if len(parsed) > 4:
+            parsed3.append(parsed[4])
     afficher_restant(parsed3)
 
 # Pour chaque champ prévisionnel, on vérifie que l'input est bon
@@ -99,19 +121,21 @@ if arr_input and midi1_input and midi2_input:
     parsed3 = [arr_input, midi1_input, midi2_input]
     afficher_restant(parsed3)
 
-# Calcul du temps de pause possible à midi en fonction du début et fin de journée
-travail = 7*60 + 30 
-if parsed:
-    if (arr_input or parsed[0]) and fin_input :
-        pause = en_minutes(fin_input) - en_minutes(arr_input) - travail
-        if pause < 45 : 
-            st.text("Impossible pause trop courte")
-        else : 
-            st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
+def print_tmp_pause_midi(début, fin):
+    pause = en_minutes(fin) - en_minutes(début) - TMP_TRAVAIL
+    if pause < 45 : 
+        st.text("Impossible pause trop courte")
+    else : 
+        st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
+        if st.button("Ewen"):
+            st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {(MINUTE_EWEN+pause)//60}:{(MINUTE_EWEN+pause)%60}")
+
+# Calcul du temps de pause possible à midi en fonction du début et fin de journée 
+if not parsed:
+    if arr_input and fin_input :
+        print_tmp_pause_midi(arr_input,fin_input)
 else:
     if arr_input and fin_input :
-        pause = en_minutes(fin_input) - en_minutes(arr_input) - travail
-        if pause < 45 : 
-            st.text("Impossible pause trop courte")
-        else : 
-            st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
+        print_tmp_pause_midi(arr_input,fin_input)
+    elif parsed[0] and fin_input:
+        print_tmp_pause_midi(parsed[0],fin_input)
