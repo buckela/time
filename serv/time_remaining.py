@@ -29,24 +29,30 @@ def en_minutes(horaire):
         # Calcul XX * 60 + YY
         return heures * 60 + minutes
 
-def en_heure(minutes):
-    return f"{minutes//60}:{minutes%60}"
 
-def htomadd(a,b):
+def en_heure(minutes):
+    return f"{minutes//60}:{minutes % 60}"
+
+
+def htomadd(a, b):
     return en_minutes(a) + en_minutes(b)
 
+
 def hadd(a, b):
-    res = htomadd(a,b)
+    res = htomadd(a, b)
     return en_heure(res)
+
 
 def htomsous(a, b):
     return en_minutes(a) - en_minutes(b)
+
 
 def hsous(a, b):
     res = htomsous(a, b)
     return en_heure(res)
 
-TMP_TRAVAIL = 7*60 + 30
+
+TMP_TRAVAIL = en_minutes("07:30")
 HEURE_EWEN = "12:00"
 MINUTE_EWEN = en_minutes(HEURE_EWEN)
 
@@ -60,7 +66,8 @@ parse_input = st.text_input("Parsing")
 parsed = re.findall(r'\b\d{2}:\d{2}\b', parse_input)
 
 # Affiche les données parsées pour vérifié qu'elles sont bonnes
-#st.text(f"parsed:{parsed}")
+# st.text(f"parsed:{parsed}")
+
 
 # Fonction qui calcul et affiche le temps restant
 def afficher_restant(parsed):
@@ -71,10 +78,10 @@ def afficher_restant(parsed):
     # En fonction du nombre d'élément, alors on décompte le temps supplémentaire
     if size > 0:
         # Matin avant 8h30
-        result -= en_minutes("08:30")-en_minutes(parsed[0])
+        result -= htomsous("08:30", parsed[0])
     if size > 2:
-        # Aprem au 3ème badgage 
-        diff = max(en_minutes(parsed[2])-en_minutes(parsed[1]),45)
+        # Aprem au 3ème badgage
+        diff = max(htomsous(parsed[2], parsed[1]), 45)
         result -= (105-diff)
 
     # Calcul de l'heure de fin
@@ -84,6 +91,7 @@ def afficher_restant(parsed):
     minutes_fin = fin % 60
     # Affichage
     st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
+
 
 # Si il y a des données entrées dans le 1er input, alors on calcul et affiche
 if parsed and len(parsed) > 0:
@@ -96,7 +104,7 @@ if parsed and len(parsed) > 0:
 
 # Pour chaque champ prévisionnel, on vérifie que l'input est bon
 miditmp_input = None
-#st.text("Prévision format : 0:0 , 0h0 , 0.0")
+# st.text("Prévision format : 0:0 , 0h0 , 0.0")
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     arr_input = st.text_input("Heure d'arrivé")
@@ -135,21 +143,21 @@ with c5:
 
 
 def print_tmp_pause_midi(début, fin):
-    pause = en_minutes(fin) - en_minutes(début) - TMP_TRAVAIL
-    if pause < 45 : 
+    pause = htomsous(fin, début) - TMP_TRAVAIL
+    if pause < 45:
         st.text("Impossible pause trop courte")
-    else : 
+    else:
         st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
         if st.button("Ewen"):
             tmp_fin_midi_ewen = MINUTE_EWEN + pause
-            if tmp_fin_midi_ewen > 13*60+30 :
-                st.text(f"Trop de temps de pause : {pause}, tu peux finir plus tôt Ewen.\nHeure de fin de midi théorique: {tmp_fin_midi_ewen//60}:{tmp_fin_midi_ewen%60}")
+            if tmp_fin_midi_ewen > 13 * 60 + 30:
+                st.text(f"Trop de temps de pause : {pause}, tu peux finir plus tôt Ewen.\nHeure de fin de midi théorique: {en_heure(tmp_fin_midi_ewen)}")
             else:
-                st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {tmp_fin_midi_ewen//60}:{tmp_fin_midi_ewen%60}")
+                st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {en_heure(tmp_fin_midi_ewen)}")
 
 
 def option_combinatoire(debut, fin, tmp_midi, midi1, midi2):
-    if debut and tmp_midi :
+    if debut and tmp_midi:
         if midi1:
             if htomadd(midi1, tmp_midi) > en_minutes("13:30"):
                 st.text(f"Erreur : Début trop tard ou pause midi trop longue : fin {hadd(tmp_midi, midi1)}")
@@ -176,11 +184,7 @@ def option_combinatoire(debut, fin, tmp_midi, midi1, midi2):
             print_tmp_pause_midi(debut, fin)
 
 
-
-
-
-
-# Calcul du temps de pause possible à midi en fonction du début et fin de journée 
+# Calcul du temps de pause possible à midi en fonction du début et fin de journée
 if not parsed:
     option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
 else:
@@ -188,4 +192,3 @@ else:
         option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
     elif parsed[0]:
         option_combinatoire(parsed[0], fin_input, miditmp_input, midi1_input, midi2_input)
-
