@@ -20,7 +20,11 @@ def en_minutes(horaire):
                 heures = int(heures)
                 minutes = int(minutes) if minutes else 0
             except:
-                st.text("format accepté : 00:00 ou 00h00 ou 0.00")
+                try:
+                    heures = int(horaire)
+                    minutes = 0
+                except:
+                    st.text("format accepté : 00:00 ou 00h00 ou 0.00")
     finally:
         # Calcul XX * 60 + YY
         return heures * 60 + minutes
