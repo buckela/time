@@ -132,7 +132,11 @@ def print_tmp_pause_midi(début, fin):
     else : 
         st.text(f"Nombre de minutes possible à midi : {pause} minutes.\n à choisir entre 11h45 et 13h30.")
         if st.button("Ewen"):
-            st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {(MINUTE_EWEN+pause)//60}:{(MINUTE_EWEN+pause)%60}")
+            tmp_fin_midi_ewen = MINUTE_EWEN + pause
+            if tmp_fin_midi_ewen > 13*60+30 :
+                st.text(f"Trop de temps de pause : {pause}, tu peux finir plus tôt Ewen.\nHeure de fin de midi théorique: {tmp_fin_midi_ewen//60}:{tmp_fin_midi_ewen%60}")
+            else:
+                st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {tmp_fin_midi_ewen//60}:{tmp_fin_midi_ewen%60}")
 
 # Calcul du temps de pause possible à midi en fonction du début et fin de journée 
 if not parsed:
