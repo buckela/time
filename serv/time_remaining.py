@@ -1,8 +1,7 @@
 """ Page pour calculer les horaires variables chez NG"""
-
-import time
 import streamlit as st
 import re 
+
 
 # Fonction pour transformer le format 00:00 en minutes int
 def en_minutes(horaire):
@@ -30,28 +29,34 @@ def en_minutes(horaire):
         return heures * 60 + minutes
 
 
+# Converti des minutes en format heure
 def en_heure(minutes):
     return f"{minutes//60}:{minutes % 60}"
 
 
+# additionne des heures en minute
 def htomadd(a, b):
     return en_minutes(a) + en_minutes(b)
 
 
+# additionne des heures
 def hadd(a, b):
     res = htomadd(a, b)
     return en_heure(res)
 
 
+# soustrait des heures en minute
 def htomsous(a, b):
     return en_minutes(a) - en_minutes(b)
 
 
+# soustrait des heures
 def hsous(a, b):
     res = htomsous(a, b)
     return en_heure(res)
 
 
+# Variable global
 TMP_TRAVAIL = en_minutes("07:30")
 HEURE_EWEN = "12:00"
 MINUTE_EWEN = en_minutes(HEURE_EWEN)
@@ -136,6 +141,7 @@ with c5:
         st.text("Erreur, heure de fin max : 17h30")
 
 
+# Calcul et affiche le temps de pause du midi (EWEN)
 def print_tmp_pause_midi(début, fin):
     pause = htomsous(fin, début) - TMP_TRAVAIL
     if pause < 45:
@@ -150,6 +156,7 @@ def print_tmp_pause_midi(début, fin):
                 st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {en_heure(tmp_fin_midi_ewen)}")
 
 
+# Affiche un resultat en fonction des options entrées
 def option_combinatoire(debut, fin, tmp_midi, midi1, midi2):
     if debut and tmp_midi:
         if midi1:
@@ -174,11 +181,12 @@ def option_combinatoire(debut, fin, tmp_midi, midi1, midi2):
         parsed3 = [debut, midi1, midi2]
         afficher_restant(parsed3)
     else:
+        # Calcul du temps de pause possible à midi en fonction du début et fin de journée
         if debut and fin:
             print_tmp_pause_midi(debut, fin)
 
 
-# Calcul du temps de pause possible à midi en fonction du début et fin de journée
+# Privilégie la simulation aux données réel
 if not parsed:
     option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
 else:
