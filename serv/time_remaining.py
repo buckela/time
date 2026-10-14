@@ -29,6 +29,23 @@ def en_minutes(horaire):
         # Calcul XX * 60 + YY
         return heures * 60 + minutes
 
+def en_heure(minutes):
+    return f"{minutes//60}:{minutes%60}"
+
+def htomadd(a,b):
+    return en_minutes(a) + en_minutes(b)
+
+def hadd(a, b):
+    res = htomadd(a,b)
+    return en_heure(res)
+
+def htomsous(a, b):
+    return en_minutes(a) - en_minutes(b)
+
+def hsous(a, b):
+    res = htomsous(a, b)
+    return en_heure(res)
+
 TMP_TRAVAIL = 7*60 + 30
 HEURE_EWEN = "12:00"
 MINUTE_EWEN = en_minutes(HEURE_EWEN)
@@ -89,28 +106,25 @@ with c1:
         st.text("Erreur, horaire de début min: 7h45")
 
 with c2:
-    if not miditmp_input:
-        midi1_input = st.text_input("Heure début midi")
-        if midi1_input and en_minutes(midi1_input) < en_minutes("11:45"):
-            st.text("Erreur, horaire de début min: 11h45")
-        if midi1_input and en_minutes(midi1_input) > en_minutes("12:45"):
-            st.text("Erreur, horaire de début max: 12h45")
+    midi1_input = st.text_input("Heure début midi")
+    if midi1_input and en_minutes(midi1_input) < en_minutes("11:45"):
+        st.text("Erreur, horaire de début min: 11h45")
+    if midi1_input and en_minutes(midi1_input) > en_minutes("12:45"):
+        st.text("Erreur, horaire de début max: 12h45")
 
 with c3:
-    if not miditmp_input:
-        midi2_input = st.text_input("Heure de fin midi")
-        if midi2_input and en_minutes(midi2_input) > en_minutes("13:30"):
-            st.text("Erreur, horaire de fin max: 13h30")
-        if midi2_input and en_minutes(midi2_input) < en_minutes("12:30"):
-            st.text("Erreur, horaire de fin min: 12h30")
+    midi2_input = st.text_input("Heure de fin midi")
+    if midi2_input and en_minutes(midi2_input) > en_minutes("13:30"):
+        st.text("Erreur, horaire de fin max: 13h30")
+    if midi2_input and en_minutes(midi2_input) < en_minutes("12:30"):
+        st.text("Erreur, horaire de fin min: 12h30")
 
 with c4:
-    if not (midi1_input or midi2_input):
-        miditmp_input = st.text_input("Temps de pause midi")
-        if miditmp_input and en_minutes(miditmp_input) > en_minutes("01:45"):
-            st.text("Erreur, temps de pause max : 1h45")
-        if miditmp_input and en_minutes(miditmp_input) < en_minutes("00:45"):
-            st.text("Erreur, temps de pause min : 0h45")
+    miditmp_input = st.text_input("Temps de pause midi")
+    if miditmp_input and en_minutes(miditmp_input) > en_minutes("01:45"):
+        st.text("Erreur, temps de pause max : 1h45")
+    if miditmp_input and en_minutes(miditmp_input) < en_minutes("00:45"):
+        st.text("Erreur, temps de pause min : 0h45")
 
 with c5:
     fin_input = st.text_input("Heure de fin ")
@@ -119,11 +133,6 @@ with c5:
     if fin_input and en_minutes(fin_input) > en_minutes("17:30"):
         st.text("Erreur, heure de fin max : 17h30")
 
-
-# En fonction des combinaison d'input, on affichera des résultats 
-if arr_input and midi1_input and midi2_input:
-    parsed3 = [arr_input, midi1_input, midi2_input]
-    afficher_restant(parsed3)
 
 def print_tmp_pause_midi(début, fin):
     pause = en_minutes(fin) - en_minutes(début) - TMP_TRAVAIL
@@ -138,12 +147,45 @@ def print_tmp_pause_midi(début, fin):
             else:
                 st.text(f"Ewen tu doit commencer la pause à {HEURE_EWEN}, et la finir à {tmp_fin_midi_ewen//60}:{tmp_fin_midi_ewen%60}")
 
+
+def option_combinatoire(debut, fin, tmp_midi, midi1, midi2):
+    if debut and tmp_midi :
+        if midi1:
+            if htomadd(midi1, tmp_midi) > en_minutes("13:30"):
+                st.text(f"Erreur : Début trop tard ou pause midi trop longue : fin {hadd(tmp_midi, midi1)}")
+            else:
+                parsed3 = [debut, midi1, hadd(tmp_midi, midi1)]
+                afficher_restant(parsed3)
+        elif midi2:
+            if htomsous(midi2, tmp_midi) < en_minutes("11h45"):
+                st.text(f"Erreur : Fin trop tôt ou pause trop longue : début {hsous(midi2, tmp_midi)}")
+            else:
+                parsed3 = [debut, midi1, hsous(midi2, tmp_midi)]
+                afficher_restant(parsed3)
+        else:
+            var_time = 90
+            var_time -= htomsous("8h30", debut)
+            var_time -= htomsous("1h45", tmp_midi)
+            st.text(f"Temps restant:{var_time}. Fin à {hadd("16h15", en_heure(var_time))}")
+
+    elif debut and midi1 and midi2:
+        parsed3 = [debut, midi1, midi2]
+        afficher_restant(parsed3)
+    else:
+        if debut and fin:
+            print_tmp_pause_midi(debut, fin)
+
+
+
+
+
+
 # Calcul du temps de pause possible à midi en fonction du début et fin de journée 
 if not parsed:
-    if arr_input and fin_input :
-        print_tmp_pause_midi(arr_input,fin_input)
+    option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
 else:
-    if arr_input and fin_input :
-        print_tmp_pause_midi(arr_input,fin_input)
-    elif parsed[0] and fin_input:
-        print_tmp_pause_midi(parsed[0],fin_input)
+    if arr_input:
+        option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
+    elif parsed[0]:
+        option_combinatoire(parsed[0], fin_input, miditmp_input, midi1_input, midi2_input)
+
