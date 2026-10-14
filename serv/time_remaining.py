@@ -75,7 +75,7 @@ if parsed and len(parsed) > 0:
 
 # Pour chaque champ prévisionnel, on vérifie que l'input est bon
 miditmp_input = None
-st.text("Prévision format : 00:00")
+#st.text("Prévision format : 0:0 , 0h0 , 0.0")
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     arr_input = st.text_input("Heure d'arrivé")
