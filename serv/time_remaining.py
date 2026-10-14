@@ -83,14 +83,8 @@ def afficher_restant(parsed):
         # Aprem au 3ème badgage
         diff = max(htomsous(parsed[2], parsed[1]), 45)
         result -= (105-diff)
-
-    # Calcul de l'heure de fin
-    fin = en_minutes("16:15") + result
-    # Formatage de l'heure de fin pour l'afficher
-    heure_fin = fin // 60
-    minutes_fin = fin % 60
     # Affichage
-    st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {heure_fin}:{minutes_fin}.")
+    st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {hadd("16:15", en_heure(result))}.")
 
 
 # Si il y a des données entrées dans le 1er input, alors on calcul et affiche
