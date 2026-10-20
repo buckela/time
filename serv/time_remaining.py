@@ -64,6 +64,23 @@ MINUTE_EWEN = en_minutes(HEURE_EWEN)
 # Setup le streamlit avec le titre et l'icone
 st.set_page_config(page_title="Time", page_icon="⌛")
 
+# html injecté : 
+_HTML_1 = """
+<div class="test">
+"""
+
+# CSS injecté : 
+_CSS = """
+<style>
+  .test{
+  margin: 2em
+  }
+</style>
+"""
+
+st.markdown(_CSS, unsafe_allow_html=True)
+st.markdown(_HTML_1, unsafe_allow_html=True)
+
 # Demande d'entrer le copier coller
 parse_input = st.text_input("Parsing")
 
