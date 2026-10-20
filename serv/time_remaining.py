@@ -89,7 +89,10 @@ def afficher_restant(parsed):
         diff = max(htomsous(parsed[2], parsed[1]), 45)
         result -= (105-diff)
     # Affichage
-    st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {hadd("16:15", en_heure(result))}.")
+    if result<0:
+        st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à 16:15.")
+    else:
+        st.text(f"Temps restant hors nominal: {result} minutes.\n Fin à {hadd("16:15", en_heure(result))}.")
 
 
 # Si il y a des données entrées dans le 1er input, alors on calcul et affiche
