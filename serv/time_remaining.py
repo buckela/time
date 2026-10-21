@@ -66,12 +66,17 @@ st.set_page_config(page_title="Time", page_icon="⌛")
 
 # html injecté : 
 _HTML_1 = """
+<nav>
+      <div class="logo">NavalTime</div>
+     
+    </nav>
 <div class="test">
     <h1 class="info">
     NavalTime
     </h1>
 
 </div>
+
 """
 
 # CSS injecté : 
@@ -83,6 +88,26 @@ _CSS = """
   h1.info{
   color : rgb(0,232,10);
   }
+  nav {
+  display: flex;
+  justify-content: space-between;
+  position : sticky;
+  align-items: center;
+  padding: 2rem 5%;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+}
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 136, 255, 0.3);
+}
 </style>
 """
 
