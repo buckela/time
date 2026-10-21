@@ -67,7 +67,7 @@ st.set_page_config(page_title="Time", page_icon="⌛")
 # html injecté : 
 _HTML_1 = """
 <div class="test">
-    <h1>
+    <h1 class="info">
     NavalTime
     </h1>
 
@@ -80,7 +80,7 @@ _CSS = """
   .test{
   margin: 2em
   }
-  test.h1{
+  .info{
   color = "red";
 </style>
 """
