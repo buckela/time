@@ -77,6 +77,21 @@ _HTML_1 = """
 # CSS injecté : 
 _CSS = """
 <style>
+:root {
+  --neon-blue: #5390d9;
+  --neon-pink: #56cfe1;
+  --neon-purple: #72efdd;
+  --neon-green: #80ffdb;
+  --dark-bg: #010101;
+  --darker-bg: #0a0a0a;
+  --text-color: #eee;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
   .test{
   margin: 2em
   }
