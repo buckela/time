@@ -70,12 +70,7 @@ _HTML_1 = """
       <div class="logo">NavalTime</div>
      
     </nav>
-<div class="test">
-    <h1 class="info">
-    NavalTime
-    </h1>
 
-</div>
 
 """
 
