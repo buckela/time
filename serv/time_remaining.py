@@ -80,7 +80,7 @@ _CSS = """
   .test{
   margin: 2em
   }
-  .info{
+  h1.info{
   color = "red";
   }
 </style>
