@@ -82,6 +82,7 @@ _CSS = """
   }
   .info{
   color = "red";
+  }
 </style>
 """
 
