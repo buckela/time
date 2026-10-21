@@ -91,6 +91,7 @@ _CSS = """
   padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color : rgb(14,44,73);
 }
   .test{
   margin: 2em
