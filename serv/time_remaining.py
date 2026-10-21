@@ -81,7 +81,7 @@ _CSS = """
   margin: 2em
   }
   h1.info{
-  color : "red";
+  color : rgb(0,232,10);
   }
 </style>
 """
