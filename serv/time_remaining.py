@@ -119,6 +119,9 @@ _CSS = """
   color: transparent;
   text-shadow: 0 0 10px rgba(0, 136, 255, 0.3);
 }
+.stTextInput input{
+    background-color : rgb( 0, 136, 110, 0.3);
+}
 </style>
 """
 
