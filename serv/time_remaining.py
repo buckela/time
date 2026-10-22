@@ -276,11 +276,11 @@ else:
         option_combinatoire(parsed[0], fin_input, miditmp_input, midi1_input, midi2_input)
 
 _HTML_supp = """
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:&s">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS82VIayT_g0qqjBK21gn1XcLKfaIjTUTKT27lDpNTJ" style="position:absolute;width:20em;height:20em;">
      
 </img>
 
 
 """
-
+#A&s
 st.markdown(_HTML_supp, unsafe_allow_html=True)
