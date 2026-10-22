@@ -132,6 +132,9 @@ _CSS = """
     
     color:rgb(255,255,255,1);
 }
+.stText label{
+    color:red;}
+    
 </style>
 """
 
