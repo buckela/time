@@ -130,6 +130,7 @@ _CSS = """
 }
 .stTextInput label{
     background-color : white;
+    color:red;
 }
 </style>
 """
