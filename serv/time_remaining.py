@@ -129,7 +129,7 @@ _CSS = """
     icon-size: 1.6
 }
 .stTextInput label{
-    background-color : rgb( 255, 255, 255, 1);
+    background-color : white;
 }
 </style>
 """
