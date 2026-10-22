@@ -120,7 +120,16 @@ _CSS = """
   text-shadow: 0 0 10px rgba(0, 136, 255, 0.3);
 }
 .stTextInput text_input{
-    background-color : rgb( 0, 136, 110, 0.3);
+    background-color : rgb( 255, 255, 255, 1);
+    text-size: 1;
+    label-size: 0.8;
+    height-button: 2;
+    border-radius: 0.1;
+    border-size: 0.05;
+    icon-size: 1.6
+}
+.stTextInput label{
+    background-color : rgb( 255, 255, 255, 0.7);
 }
 </style>
 """
