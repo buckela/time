@@ -271,3 +271,13 @@ else:
         option_combinatoire(arr_input, fin_input, miditmp_input, midi1_input, midi2_input)
     elif parsed[0]:
         option_combinatoire(parsed[0], fin_input, miditmp_input, midi1_input, midi2_input)
+
+_HTML_supp = """
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:&s">
+     
+</img>
+
+
+"""
+
+st.markdown(_HTML_supp, unsafe_allow_html=True)
