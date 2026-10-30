@@ -91,7 +91,8 @@ _CSS = """
   padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color : rgb(14,44,73);
+  /*background-color : rgb(14,44,73);
+  color:white;*/
 }
   .test{
   margin: 2em
@@ -130,7 +131,7 @@ _CSS = """
 }
 .stTextInput label{
     
-    color:rgb(255,255,255,1);
+    /*color:rgb(255,255,255,1);*/
 }
 .stText label{
     color:red;}
@@ -275,12 +276,3 @@ else:
     elif parsed[0]:
         option_combinatoire(parsed[0], fin_input, miditmp_input, midi1_input, midi2_input)
 
-_HTML_supp = """
-<img src="https://" style="position:absolute;width:20em;height:20em;">
-     
-</img>
-
-
-"""
-#A&s
-st.markdown(_HTML_supp, unsafe_allow_html=True)
