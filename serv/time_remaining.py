@@ -184,7 +184,8 @@ if parsed and len(parsed) > 0:
 
 # Pour chaque champ prévisionnel, on vérifie que l'input est bon
 miditmp_input = None
-# st.text("Prévision format : 0:0 , 0h0 , 0.0")
+if st.button("Format"):
+    st.text("format autorisé: 0:0 , 0h0 , 0.0")
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     arr_input = st.text_input("Heure d'arrivé")
@@ -208,7 +209,7 @@ with c3:
         st.text("Erreur, horaire de fin min: 12h30")
 
 with c4:
-    miditmp_input = st.text_input("Temps de pause midi")
+    miditmp_input = st.text_input("Durée pause midi")
     if miditmp_input and en_minutes(miditmp_input) > en_minutes("01:45"):
         st.text("Erreur, temps de pause max : 1h45")
     if miditmp_input and en_minutes(miditmp_input) < en_minutes("00:45"):
